@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import { useActions } from '../../hooks/useActions';
 import { useCompare } from '../../hooks/useCompare';
 import st from '../../styles/ReplaceModal.module.css';
@@ -14,6 +14,22 @@ const ReplaceModal: FC<ReplaceModalProps> = ({ replaceId, onClose }) => {
   const { items, currentIdList, itemsQuantity } = useCompare();
   const { replaceItem } = useActions();
   const [search, setSearch] = useState('');
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      const { left, width } = ref.current.getBoundingClientRect();
+
+      if (left < 0) {
+        ref.current.style.right = Math.floor(left) + 'px';
+      }
+
+      if (width > window.innerWidth) {
+        ref.current.style.width = Math.floor(width) + 'px';
+      }
+    }
+  }, []);
 
   let hiddenItems = items.filter(({ id }) => !currentIdList.includes(id));
 
@@ -33,7 +49,7 @@ const ReplaceModal: FC<ReplaceModalProps> = ({ replaceId, onClose }) => {
   };
 
   return (
-    <div className={st.modal}>
+    <div ref={ref} className={st.modal}>
       {items.length - itemsQuantity > 6 && (
         <Input placeholder='Поиск' value={search} onChange={changeHandler} />
       )}

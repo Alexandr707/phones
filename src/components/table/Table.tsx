@@ -2,6 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 import fieldDescription from '../../data/phoneFieldsDescription';
 import { useActions } from '../../hooks/useActions';
 import { useCompare } from '../../hooks/useCompare';
+import { useResize } from '../../hooks/useResize';
 import { PhoneType } from '../../types/phone.model';
 import { PhoneDescription } from '../../types/phoneDescription.model';
 import { isSamePropValue } from '../../utils/isSamePropValue';
@@ -10,22 +11,25 @@ import CompareCart from '../CompareCart';
 import Container from '../Container';
 import Td from './Td';
 
-interface Tableprops {
+interface TableProps {
   rows: Array<keyof PhoneDescription>;
   phones: PhoneType[];
 }
 
-const Table: FC<Tableprops> = ({ rows, phones }) => {
+const Table: FC<TableProps> = ({ rows, phones }) => {
   const { showDifference, items } = useCompare();
   const { toggleShowDifference } = useActions();
 
+  const wraperRef = useRef<HTMLDivElement>(null);
   const tbodyRef = useRef<HTMLTableSectionElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
+  const screen = useResize();
+
   useEffect(() => {
-    if (tbodyRef.current && bgRef.current) {
+    if (wraperRef.current && tbodyRef.current && bgRef.current) {
       const scrollSize =
-        tbodyRef.current.offsetWidth > window.innerWidth ? 6 : 0;
+        wraperRef.current.offsetHeight - wraperRef.current.clientHeight;
 
       bgRef.current.style.height =
         tbodyRef.current.getBoundingClientRect().height + 2 + scrollSize + 'px';
@@ -43,7 +47,7 @@ const Table: FC<Tableprops> = ({ rows, phones }) => {
   return (
     <div className='relative'>
       <Container>
-        <div className='mt-4 overflow-x-auto'>
+        <div ref={wraperRef} className='mt-4 overflow-x-auto'>
           <table className='border-collapse w-full leading-none '>
             <thead>
               <tr>
@@ -56,7 +60,7 @@ const Table: FC<Tableprops> = ({ rows, phones }) => {
                   />
                 </td>
                 {phones.map((ph) => (
-                  <td key={ph.id} className='pb-8'>
+                  <td key={ph.id} className='pb-8 px-4'>
                     <CompareCart
                       id={ph.id}
                       imageUrl={ph.imageUrl}
