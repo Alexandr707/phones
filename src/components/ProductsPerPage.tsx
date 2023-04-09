@@ -30,7 +30,7 @@ const ProductsPerPage: FC<ProductsPerPageProps> = ({
     <div
       className={`
     text-navyBlue leading-5 flex
-    ${className}
+    ${className || ''}
     `}
     >
       {!!label && <span className='mr-2'>{label}:</span>}
