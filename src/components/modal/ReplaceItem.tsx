@@ -26,7 +26,7 @@ const ReplaceItem: FC<ReplaceItemProps> = ({
         className='w-[50px] h-[50px]  mr-6 object-contain'
       />
       <h3
-        className={`align-middle leading-10 whitespace-nowrap text-ellipsis overflow-hidden text-black ${st.label}`}
+        className={`max-w-full align-middle leading-10 whitespace-nowrap text-ellipsis overflow-hidden text-black ${st.label}`}
         title={label}
       >
         {label}
