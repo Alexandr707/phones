@@ -8,7 +8,7 @@ interface HeadingProps {
 const Heading: FC<HeadingProps> = ({ title, className }) => {
   return (
     <h2
-      className={`text-[48px] leading-5 text-oldSilver font-bold ${
+      className={`text-[48px] leading-none text-oldSilver font-bold ${
         className || ''
       }`}
     >
