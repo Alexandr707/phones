@@ -51,7 +51,9 @@ const ReplaceModal: FC<ReplaceModalProps> = ({ replaceId, onClose }) => {
   return (
     <div ref={ref} className={st.modal}>
       {items.length - itemsQuantity > 6 && (
-        <Input placeholder='Поиск' value={search} onChange={changeHandler} />
+        <div className='relative'>
+          <Input placeholder='Поиск' value={search} onChange={changeHandler} />
+        </div>
       )}
       {hiddenItems.map((item) => (
         <ReplaceItem
